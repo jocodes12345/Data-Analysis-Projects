@@ -1,0 +1,126 @@
+---
+title: "Week_5_LAB"
+author: "Joachim Vogl"
+date: "02/19/2026"
+output: word_document
+---
+
+```{r}
+
+## Setup
+
+library(tidyverse)
+library(palmerpenguins)
+library(ggthemes)
+
+#install.packages("palmerpenguins")
+#install.packages("ggthemes")
+
+
+```
+
+
+
+
+```{r}
+
+# =======================================================
+# MY GOOD PLOT
+# =======================================================
+
+#this displays the cars dataset, opens it essentially in the environment
+mpg
+
+#this provides the 6 digit summary
+summary(mpg)
+
+#this command creates the graph for the miles per gallon and cars dataset
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy))
+
+#this function adds color by class and a trendline
+ggplot(data = mpg, aes(x = displ, y = hwy, color = class)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "black", linetype = "dashed")
+
+#this makes the background color of the plot look beautiful
+ggplot(data = mtcars, aes(x = mpg, y = cyl))+ 
+  geom_point() + 
+  theme(panel.background = element_rect(fill = "#98ff93"))
+
+#main dimensions of the plot - final version with all features
+ggplot(data = mpg, aes(x = displ, y = hwy, color = class)) +
+  geom_point(size = 3, alpha = 0.7) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", linetype = "dashed") +
+  labs(
+    title = "Fuel Efficiency vs Engine Displacement by Vehicle Class",
+    x = "Engine Displacement (liters)",
+    y = "Highway Miles Per Gallon",
+    color = "Vehicle Class"
+  ) +
+  scale_x_continuous(breaks = seq(1, 7, by = 1)) +     # x-axis ticks every 1
+  scale_y_continuous(breaks = seq(10, 45, by = 5)) +   # y-axis ticks every 5
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    legend.position = "right",
+    panel.border = element_rect(color = "black", linewidth = 1.5, fill = NA)
+  )
+
+
+```
+
+
+
+```{r}
+# =======================================================
+# MY BAD PLOT
+# =======================================================
+
+
+
+#this command creates the graph for the miles per gallon and cars dataset
+ggplot(data = mpg) +
+geom_point(mapping = aes(x = displ, y = hwy))
+
+
+#this function flips the x and y axis, perfectly screwing up the independent
+#and dependent variables in the graph
+ggplot(data = mpg) +
+geom_point(mapping = aes(y = displ, x = hwy, color = class))
+geom_smooth(method = "lm", se = FALSE, color = "white", linetype = "dashed")
+
+
+#this makes the background color of the plot look ugly
+
+ggplot(data = mtcars, aes(y = mpg, x = cyl))+ 
+  geom_point() + 
+  theme(panel.background = element_rect(fill = "#98ff93")) 
+
+
+# This makes the dots tiny and the font giant so you can't see anything
+ggplot(data = mpg, aes(x = displ, y = hwy, color = class)) +
+  geom_point(size = 0.03, alpha = 0.2) +
+  scale_color_manual(values = rep("#8B4513", 7)) +  # ugly brown for all classes
+  scale_x_continuous(breaks = c(1, 2, 3.5, 5, 7)) +
+scale_y_continuous(breaks = c(1, 20, 35, 50, 90)) +
+  geom_function(fun = function(x) 25 + 10*sin(x*2), color = "green", linewidth = 2) +
+geom_function(fun = function(x) 23 + 8*sin(x*3 + 1), color = "blue", linewidth = 2) +
+geom_function(fun = function(x) 27 + 12*sin(x*1.5 + 2), color = "yellow", linewidth = 2) +
+geom_function(fun = function(x) 20 + 15*sin(x*2.5 + 3), color = "red", linewidth = 2) +
+geom_function(fun = function(x) 22 + 9*sin(x*4 + 4), color = "orange", linewidth = 2) +
+  labs(
+    title = "Fuel Efficiency vs Engine Displacement by Vehicle Class",
+    x = "Engine_Displacemenst(liters)",
+    y = "MPG OF THE HIWAYY",
+    color = "Vehicle Class"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 143, face = "bold"),
+    legend.position = "right"
+  )
+
+```
+
+

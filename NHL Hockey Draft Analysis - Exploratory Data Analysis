@@ -1,0 +1,88 @@
+#############################################################################
+# NHL Draft Analysis - Exploratory Data Analysis
+# Author: Joachim Vogl
+# Date: 2026
+# Description: Exploratory analysis of NHL draft data examining player
+#              games played, positions, nationalities, and penalty minutes
+#              through summary statistics and data visualization.
+#############################################################################
+
+### Load Data ###
+
+hockey <- read.csv("data/project1_hockeydraft.csv")
+
+### Summary Statistics - Games Played ###
+
+# Distribution of games played across all players
+hockey$Games_Played
+
+# Central tendency and spread
+mean(hockey$Games_Played)
+median(hockey$Games_Played)
+sd(hockey$Games_Played)
+
+### Distribution Visualizations ###
+
+# Boxplot of games played distribution
+boxplot(hockey$Games_Played,
+        main = "Distribution of Games Played",
+        ylab = "Games Played",
+        col = "orange")
+
+### Categorical Variable Analysis ###
+
+# Player positions frequency
+barplot(table(hockey$Position),
+        main = "Player Positions in NHL Draft",
+        xlab = "Position",
+        ylab = "Count",
+        col = "steelblue")
+
+# Player nationalities frequency
+barplot(table(hockey$Nationality),
+        main = "Player Nationalities in NHL Draft",
+        xlab = "Nationality",
+        ylab = "Count",
+        col = "forestgreen")
+
+### Relationship Analysis ###
+
+# Scatterplot: Games Played vs Penalty Minutes
+plot(x = hockey$Games_Played,
+     y = hockey$Penalty_Minutes,
+     main = "Penalty Minutes vs Games Played",
+     xlab = "Games Played",
+     ylab = "Penalty Minutes",
+     col = "red")
+
+# Boxplot: Penalty Minutes by Position
+boxplot(hockey$Penalty_Minutes ~ hockey$Position,
+        main = "Penalty Minutes by Position",
+        xlab = "Position",
+        ylab = "Penalty Minutes",
+        col = "steelblue")
+
+### Individual Player Analysis ###
+
+# Extract specific player record (row 231)
+hockey[231, ]
+
+# Extract fourth column data
+hockey[, 4]
+
+# Compare player 231's games played to dataset average
+hockey[231, ]$Games_Played >= mean(hockey$Games_Played)
+
+### Advanced Statistics ###
+
+# Interquartile range calculation
+q <- quantile(hockey$Games_Played)
+IQR_games <- q[4] - q[2]
+IQR_games
+
+# Population averages
+mean(hockey$Games_Played)
+mean(hockey$Penalty_Minutes)
+
+# Identify outliers in games played
+boxplot.stats(hockey$Games_Played)$out

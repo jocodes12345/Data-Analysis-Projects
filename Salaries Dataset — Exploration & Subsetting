@@ -1,0 +1,23 @@
+ds <- read.csv("Assignments/ds_salaries.csv")
+
+dim(ds)
+
+summary(ds)
+
+ds[1:10,] 
+
+install.packages("dplyr")
+library(dplyr)
+#this is sort of like importing in Python
+
+glimpse(ds)
+#glimpse function allows you to see the contents of each column
+#in a dataset. It's in the dplyr package
+
+#print number rows and columns of ds
+dim(ds)
+ds[1:3755,1:11]
+
+#print summary of ds
+summary(ds)
+

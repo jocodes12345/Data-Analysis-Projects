@@ -1,0 +1,66 @@
+#############################################################################
+# Probability Simulation & Statistical Sampling
+# Author: Joachim Vogl
+# Date: 2026
+# Description: Demonstrates probability simulation through coin flipping
+#              experiments and statistical sampling through basketball
+#              player height analysis with custom functions.
+#############################################################################
+
+### Probability Simulation - Coin Flipping ###
+
+coin <- c("heads", "tails")
+
+# Single fair coin flip
+sample(coin, 1)
+
+# 100 fair coin flips (50/50 probability)
+faircoin <- sample(coin, 100, TRUE, c(0.5, 0.5))
+table(faircoin)
+
+# 100 biased coin flips (75% heads probability)
+faircoin2 <- sample(coin, 100, TRUE, c(0.75, 0.25))
+table(faircoin2)
+
+### Statistical Sampling - Basketball Player Heights ###
+
+# Dataset of 15 players
+player_data <- data.frame(
+  player_id = 1:15,
+  heights = c(78, 71, 75, 66, 72, 75, 68, 75, 61, 70, 71, 63, 68, 69, 66)
+)
+
+# Population statistics
+Average_Height_Mean <- mean(player_data$heights)
+Average_Height_Sum <- sum(player_data$heights)
+Average_Height_Quartiles <- quantile(player_data$heights)
+
+# Randomly select 5 players for starting lineup
+starting_lineup_ids <- sample(player_data$player_id, 5, FALSE)
+
+# Retrieve starting lineup player data
+starting_lineup_data <- player_data[which(player_data$player_id %in% starting_lineup_ids), ]
+starting_lineup_data
+
+# Calculate starting lineup average height
+avg_height_starting_lineup <- mean(starting_lineup_data$heights)
+
+# Compare starting lineup height to population average
+if(avg_height_starting_lineup > Average_Height_Mean) {
+  print("Starting lineup average height exceeds team average")
+} else {
+  print("Starting lineup average height is below team average")
+}
+
+### Custom Sampling Function ###
+
+# Function to randomly select 5 players and return average height
+Average_Height <- function() {
+  total_heights <- c(player_data$heights)
+  random_heights <- sample(total_heights, 5, FALSE)
+  average <- mean(random_heights)
+  return(average)
+}
+
+# Run function 11 times to observe sampling variation
+replicate(11, Average_Height())

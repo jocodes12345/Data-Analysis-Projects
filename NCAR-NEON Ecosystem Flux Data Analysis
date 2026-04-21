@@ -1,0 +1,129 @@
+---
+title: "NCAR-NEON Ecosystem Data Analysis"
+author: "Joachim Vogl"
+date: "`r Sys.Date()`"
+output: word_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+
+## R Markdown
+
+library(tidyverse)
+
+# read in data 
+library(readxl)
+NCAR_NEON_data <- read_csv("C:/Users/joach/OneDrive/Desktop/Documents/Colorado State University/Classes, grades, transcripts/CLASSES/Junior Year/Quantitative Reasoning for ESS/Lab Assignments/Week 4 Lab/NCAR_NEON_dataset.csv")
+
+#summary of all the data in the file
+summary(NCAR_NEON_data)
+
+
+```
+
+
+```{r}
+
+# =======================================================
+# EXERCISES
+# =======================================================
+
+#1.	Reorder the variables in NCAR_NEON_data so that the date is the first column, followed by the site ID, and then followed by the rest. (Hint: look into the use of everything()). (5 pts)
+
+NCAR_NEON_data <- NCAR_NEON_data %>%
+  select(date, site_id, everything())
+
+#checking to see if it worked
+# Check the column order
+names(NCAR_NEON_data)
+
+# checking the first few rows
+head(NCAR_NEON_data)
+
+# =======================================================
+
+
+```
+
+
+```{r}
+
+# =======================================================
+
+#2.	Create a new column called ‘GPP_group’ where days with NEON_GPP greater than the overall average are called ‘large’ and those smaller are called ‘small’. (Note: this answer requires the additional use of both the if_else() and mean() functions. Remember how to deal with NA values in mean()). (5 pts)
+
+NCAR_NEON_data <- NCAR_NEON_data %>%
+  mutate(
+    NEON_GPP = as.numeric(NEON_GPP),
+    GPP_group = if_else(NEON_GPP > mean(NEON_GPP, na.rm = TRUE), 
+                        "large", 
+                        "small")
+  )
+
+# =======================================================
+
+```
+
+
+```{r}
+
+# =======================================================
+
+#3.	Which site had the largest average summer NEON GPP? (5 pts)
+
+NCAR_NEON_data %>%
+  filter(month(date) %in% c(6, 7, 8)) %>%
+  group_by(site_id) %>%
+  summarize(avg = mean(NEON_GPP, na.rm = TRUE)) %>%
+  arrange(desc(avg))
+
+# =======================================================
+
+
+```
+
+
+```{r}
+
+# =======================================================
+
+#4.	You want to filter data for years that are not in a vector of given years, but this code doesn’t work. Tweak it so that it does. (5 pts)
+#    NCAR_NEON_data %>% 
+#      filter(year(date) !%in% c(2018:2020))
+ 
+#proper code
+
+NCAR_NEON_data %>%
+  filter(!grepl("^2018|^2019|^2020", as.character(date)))
+
+
+library(readxl)
+
+
+# =======================================================
+
+
+```
+
+
+```{r}
+
+# =======================================================
+  
+#5.	Using the visualization techniques you learned today, create a figure that allows you to visualize some comparison of your choice among the NCAR_NEON data set. Along with embedding the figure you made, write a testable hypothesis about the data and the patterns you see from this figure. (5 pts)
+
+#box plot of GPP over time
+
+ggplot(NCAR_NEON_data, aes(x = site_id, y = NEON_GPP)) +
+  geom_boxplot() +
+  labs(title = "GPP Distribution by Site", x = "Site", y = "NEON GPP")
+
+#My hypothesis: KONZ site will have significantly lower median GPP values compared to BART and TALL sites due to differences in ecosystem productivity.
+
+# =======================================================
+
+```

@@ -1,0 +1,29 @@
+ds <- read.csv("Assignments/ds_salaries.csv")
+
+#summary of the data
+summary(ds)
+
+# extracted salaries in US Dollars of each of the people in the database
+salary <- ds$salary_in_usd
+
+# extracted salaries in US Dollars of each of the people in the database
+exp_lvl <- ds$experience_level
+
+#subset of data, other way to find rows of stuff
+subset <- ds[1:5, 2]
+
+#table function
+table(exp_lvl)
+
+
+# Print data types of salary and exp_lvl
+class(salary)
+class(exp_lvl)
+
+# Print mean, median, and standard deviation of salary
+mean(salary)
+median(salary)
+sd(salary)
+
+# table function - print frequencies of exp_lvl
+table(exp_lvl)

@@ -1,0 +1,73 @@
+#############################################################################
+# US Honey Production Analysis & Statistical Sampling
+# Author: Joachim Vogl
+# Date: 2026
+# Description: Explores US honey production data through exploratory analysis,
+#              distribution visualization, and repeated random sampling to
+#              demonstrate the Central Limit Theorem.
+#############################################################################
+
+### Reproducibility - Random Number Generation ###
+
+rnorm(1)
+
+set.seed(505)
+rnorm(1)
+
+set.seed(1234)
+rnorm(5)
+
+set.seed(42)
+rnorm(5)
+
+### Exploratory Analysis of US Honey Production Data ###
+
+# Load data
+honey <- read.csv("data/US_honey_production_dataset.csv")
+
+# Extract colony yield measurements (units: lbs/colony)
+yield <- honey$yield_per_colony
+
+# Summary statistics
+mean(yield)
+median(yield)
+
+# Visualize distribution
+hist(yield,
+     main = "Histogram of Honey Yield Per Colony",
+     xlab = "Yield (lbs)",
+     col = "gold")
+
+# Distribution Analysis:
+# The data is right-skewed, with most values clustering in the lower yield
+# range and a tail stretching toward higher yield values. The median (~55 lbs)
+# is a better measure of central tendency than the mean due to this skew.
+# Most randomly selected values would fall near the median range, while
+# high yield outliers would be rarely selected.
+
+### Repeated Sampling - Central Limit Theorem Demonstration ###
+
+# Initialize storage vector for 1000 sample averages
+yield_avgs <- rep(0, 1000)
+
+set.seed(42)
+
+# Draw 1000 random samples of size 50 and store their averages
+for (i in 1:1000) {
+  sample_yield <- sample(yield, 50, replace = FALSE)
+  avg_yield <- mean(sample_yield)
+  yield_avgs[i] <- avg_yield
+}
+
+# Visualize distribution of sample averages
+hist(yield_avgs,
+     main = "Distribution of 1000 Sample Means (n=50)",
+     xlab = "Average Yield (lbs)",
+     col = "steelblue")
+
+# Central Limit Theorem Observation:
+# The distribution of sample means is approximately normal (bell-shaped)
+# and symmetrical around the population mean, despite the original data
+# being right-skewed. This demonstrates the Central Limit Theorem - as
+# sample size increases, the distribution of sample means approaches
+# normality regardless of the original distribution's shape.

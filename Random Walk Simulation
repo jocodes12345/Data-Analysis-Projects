@@ -1,0 +1,95 @@
+#############################################################################
+# Random Walk Simulation
+# Author: Joachim Vogl
+# Date: 2026
+# Description: Simulates a 10,000-step random walk using matrix indexing,
+#              for-loops, and random sampling. Visualizes spatial path
+#              using base R plotting.
+#############################################################################
+
+## Random Walk ##
+
+# Create a matrix of zeros with 10000 rows and 2 columns. Assign this matrix to
+#  a variable called loc. Each row of this vector are an (x, y) pair of spatial
+#  coordinates
+
+loc <- matrix(0, 10000, 2)
+
+# Create a character vector containing the 4 primary directions. (Up, Down, Left, Right)
+#  Assign this vector to a variable called direc.
+
+direc <- c("Up", "Down", "Left", "Right")
+
+# Set a seed to a number of your choosing.
+
+set.seed(243)
+
+# Assign 0 to a variable called x. Do the same for a variable called y. These 
+#   variables will keep track of the current location.
+
+x <- (0)
+y <- (0)
+
+# Write a for-loop that will randomly select a direction, and add or subtract 1
+#   from x or y, based on the direction that was selected. Fill in the appropriate
+#   elements of the loc matrix with the updated values in x and y.
+
+# to help, I have written parts of the code.
+
+
+for(i in 1:10000) {
+  # randomly select a direction
+  rdirec <- sample(direc, 1)
+  
+  # fill in the conditions and actions to take if each condition is true
+  if (rdirec == "Up") {
+    
+    y <- y + 1
+    
+  } else if (rdirec == "Down") {
+    
+    y <- y - 1
+    
+  } else if (rdirec == "Left") {
+    
+    x <- x - 1
+    
+  } else {
+    
+    x <- x + 1
+    
+  }
+  
+  # reassign row of matrix with updated coordinates
+  # assign updated x value
+  loc[i , 1] <- x
+    
+    # assign updated y value
+    loc[i , 2] <- y
+}
+
+# Display your random walk! Make a plot with the first column of the loc matrix
+#  on the x-axis, and the second column of the loc matrix on the y-axis. Set
+#  type = "l" in the plot function to make it a line plot.
+
+plot(loc[, 1],loc[, 2], type = "l")
+
+#if we want to get the first column of location put loc[, 1]
+#for y values and the second column, do loc[, 2]
+#type = l
+
+
+#  different seed to see different results.
+
+plot(loc[, 1], loc[, 2], type = "l",
+     col = "steelblue",
+     main = "Random Walk",
+     xlab = "X Position",
+     ylab = "Y Position")
+
+
+plot(loc[, 1], loc[, 2], type = "l",
+     col = "orange",
+     main = "Random Walk",
+     xlab = "X Position",
+     ylab = "Y Position")

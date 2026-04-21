@@ -1,0 +1,81 @@
+#############################################################################
+# Heart Attack Patient Analysis & Law of Large Numbers Demonstration
+# Author: Joachim Vogl
+# Date: 2026
+# Description: Statistical analysis of maximum heart rates in heart attack
+#              patients, demonstrating sampling statistics, Z-scores, and
+#              the Law of Large Numbers through iterative random sampling.
+#############################################################################
+
+### Load and Prepare Data ###
+
+heart <- read.csv("data/heart.csv")
+
+# Extract maximum heart rate column (thalachh)
+max_heart_rates <- heart$thalachh
+
+### Exploratory Analysis ###
+
+# Visualize distribution of maximum heart rates
+hist(max_heart_rates,
+     main = "Distribution of Maximum Heart Rates",
+     xlab = "Maximum Heart Rate (bpm)",
+     col = "salmon")
+
+# Summary statistics
+mean(max_heart_rates)
+sd(max_heart_rates)
+
+### Proportion Analysis ###
+
+# Proportion of patients with above-average maximum heart rate
+(length(which(max_heart_rates > mean(max_heart_rates))) / length(max_heart_rates)) * 100
+# Result: ~56.44% of patients had above-average maximum heart rates
+
+# Proportion of patients with maximum heart rate greater than 180bpm
+(length(which(max_heart_rates > 180)) / length(max_heart_rates)) * 100
+# Result: ~9.9% - a maximum heart rate >180bpm is unusual, representing
+# only the top ~10% of the distribution
+
+### Random Sampling & Z-Score Calculation ###
+
+set.seed(147)
+
+# Randomly sample one patient's maximum heart rate
+sample_patient_rate <- sample(max_heart_rates, 1)
+
+# Proportion of heart rates greater than sampled value
+(length(which(max_heart_rates > sample_patient_rate)) / length(max_heart_rates)) * 100
+
+# Calculate Z-score for sampled value
+# Z-score measures how many standard deviations the value is from the mean
+z_score <- (sample_patient_rate - mean(max_heart_rates)) / sd(max_heart_rates)
+z_score
+
+### Law of Large Numbers Demonstration ###
+
+# Initialize vectors for sample sizes 1-200 and their corresponding averages
+sample_size <- 1:200
+avg_mhr <- rep(0, 200)
+
+# For each sample size, calculate the average maximum heart rate
+for (s in sample_size) {
+  current_sample <- sample(max_heart_rates, s)  # draw random sample
+  current_average <- mean(current_sample)        # calculate average
+  avg_mhr[s] <- current_average                  # store result
+}
+
+# Visualize how sample average converges to population mean as sample size increases
+plot(sample_size, avg_mhr,
+     type = "l",
+     main = "Law of Large Numbers: Sample Size vs Average Max Heart Rate",
+     xlab = "Sample Size",
+     ylab = "Average Max Heart Rate (bpm)")
+
+# Add population mean reference line
+abline(h = mean(max_heart_rates), col = "red")
+
+# Key Observation: As sample size increases, the sample average converges
+# toward the population mean (~149.6 bpm), demonstrating the Law of Large
+# Numbers. Larger samples produce more stable, reliable estimates of the
+# population parameter.

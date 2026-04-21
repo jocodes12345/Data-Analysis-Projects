@@ -1,0 +1,83 @@
+#############################################################################
+# Spotify Top Tracks Analysis - Exploratory Data Analysis
+# Author: Joachim Vogl
+# Date: 2026
+# Description: Exploratory analysis of Spotify streaming data examining
+#              song characteristics including streams, beats per minute,
+#              modes, and keys through summary statistics and visualization.
+#############################################################################
+
+### Load Data ###
+
+spotify <- read.csv("data/project1_spotify.csv")
+
+### Data Exploration ###
+
+# View streams column
+spotify$streams
+
+# Individual track analysis - "Danza Kuduro" (row 98)
+spotify[98, ]
+
+### Summary Statistics ###
+
+# Streams
+mean(spotify$streams)
+median(spotify$streams)
+sd(spotify$streams)
+
+# Beats per minute
+mean(spotify$bpm)
+median(spotify$bpm)
+sd(spotify$bpm)
+
+### Distribution Visualizations ###
+
+# Streams distribution
+boxplot(spotify$streams,
+        main = "Distribution of Track Streams",
+        xlab = "Tracks",
+        ylab = "Number of Streams",
+        col = "orange")
+
+# BPM distribution
+boxplot(spotify$bpm,
+        main = "Distribution of Beats Per Minute",
+        xlab = "Tracks",
+        ylab = "BPM",
+        col = "purple")
+
+### Categorical Analysis ###
+
+# Song modes frequency
+barplot(table(spotify$mode),
+        main = "Distribution of Song Modes",
+        xlab = "Mode",
+        ylab = "Count",
+        col = "steelblue")
+
+### Outlier Detection ###
+
+# Identify stream outliers
+boxplot.stats(spotify$streams)$out
+spotify[spotify$streams %in% boxplot.stats(spotify$streams)$out, ]
+
+# Identify BPM outliers
+boxplot.stats(spotify$bpm)$out
+spotify[spotify$bpm %in% boxplot.stats(spotify$bpm)$out, ]
+
+### Relationship Analysis ###
+
+# Scatterplot: BPM vs Streams
+plot(spotify$bpm, spotify$streams,
+     main = "Beats Per Minute vs Number of Streams",
+     xlab = "Beats Per Minute",
+     ylab = "Number of Streams",
+     col = "forestgreen")
+
+# Boxplot: BPM grouped by track mode (Major/Minor)
+boxplot(spotify$bpm ~ spotify$mode,
+        main = "Beats Per Minute by Track Mode",
+        xlab = "Mode (Major/Minor)",
+        ylab = "Beats Per Minute",
+        col = "tomato")
