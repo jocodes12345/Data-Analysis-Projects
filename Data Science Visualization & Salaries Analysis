@@ -1,0 +1,64 @@
+#############################################################################
+# Data Science Salaries Analysis
+# Author: Joachim Vogl
+# Date: 2026
+# Description: Exploratory analysis of data science salary data examining
+#              compensation distributions, experience levels, and the
+#              relationship between years of experience and salary.
+#############################################################################
+
+### Load Data ###
+
+ds <- read.csv("data/ds_salaries.csv")
+
+### Data Overview ###
+
+summary(ds)
+
+### Extract Key Variables ###
+
+# Salary in USD
+salary <- ds$salary_in_usd
+
+# Experience level
+exp_lvl <- ds$experience_level
+
+### Summary Statistics ###
+
+mean(salary)
+median(salary)
+sd(salary)
+min(salary)
+max(salary)
+quantile(salary)
+
+### Distribution Visualizations ###
+
+# Salary distribution
+boxplot(salary,
+        main = "Distribution of Data Science Salaries",
+        ylab = "Salary (USD)",
+        col = "steelblue")
+
+hist(salary,
+     main = "Histogram of Data Science Salaries",
+     xlab = "Salary (USD)",
+     col = "steelblue")
+
+# Experience level frequency
+barplot(table(exp_lvl),
+        main = "Distribution of Experience Levels",
+        xlab = "Experience Level",
+        ylab = "Count",
+        col = "orange")
+
+### Relationship Analysis ###
+
+# Years of experience vs salary
+yrs_exp <- rand_yrs_exp(exp_lvl)
+
+plot(yrs_exp, salary,
+     main = "Years of Experience vs Salary",
+     xlab = "Years of Experience",
+     ylab = "Salary (USD)",
+     col = "forestgreen")
